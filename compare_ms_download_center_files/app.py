@@ -89,7 +89,7 @@ class Application:
 
         for iter_warc_gz_path in self.args.warc_file_folder.rglob("*warc.gz"):
 
-            logger.info("on WARC file `%s`", iter_warc_gz_path)
+            self.logger.info("on WARC file `%s`", iter_warc_gz_path)
 
             try:
                 cnt = 0
