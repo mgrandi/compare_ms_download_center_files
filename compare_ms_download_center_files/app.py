@@ -41,7 +41,7 @@ class Application:
 
         for iter_cdx_gz_path in self.args.cdx_file_folder.rglob("*.cdx.gz"):
 
-            self.logger.info("on cdx file: `%s`", iter_cdx_gz_path)
+            self.logger.info("on CDX file: `%s`", iter_cdx_gz_path)
 
             cnt = 0
             with gzip.open(iter_cdx_gz_path, "rt", encoding="utf-8") as gzip_file:
@@ -88,6 +88,8 @@ class Application:
         # go through warc folders
 
         for iter_warc_gz_path in self.args.warc_file_folder.rglob("*warc.gz"):
+
+            logger.info("on WARC file `%s`", iter_warc_gz_path)
 
             try:
                 cnt = 0
