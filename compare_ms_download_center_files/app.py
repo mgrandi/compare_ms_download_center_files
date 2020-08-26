@@ -119,7 +119,18 @@ class Application:
         self.logger.info("loaded `%s` total WARC entries", len(self.warc_entries_list))
 
 
-        set_of_cdx_not_in_warc = set(self.cdx_entries_list).difference(set(self.warc_entries_list))
+        # in reverse order from what i think it should be, its warc.difference(cdx) instead of the other way around
+        #
+        # >>> x
+        # [1, 2, 3]
+        # >>> y
+        # [2, 3, 4, 5, 6, 7, 8]
+        # >>> set(x).difference(set(y))
+        # {1}
+        # >>> set(y).difference(set(x))
+        # {4, 5, 6, 7, 8}
+        #
+        set_of_cdx_not_in_warc = set(self.warc_entries_list).difference(set(self.cdx_entries_list))
 
         self.logger.info("`%s` CDX entries were found that were not in the WARC entries set", len(set_of_cdx_not_in_warc))
 
