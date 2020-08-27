@@ -100,6 +100,14 @@ class Application:
                             # import pdb;pdb.set_trace()
 
                             file_hash = record.rec_headers.get_header('WARC-Payload-Digest')
+
+                            # the hashes are actually like this:
+                            # `sha1:EGD47VYGZKWHT6PTS7HJN7D4TCEKSWVC`, so we need to strip off the `sha1:` part
+                            sha_str_prefix = "sha1:"
+
+                            if file_hash.startswith(len(sha_str_prefix)):
+                                file_hash = file_hash[len(sha_str_prefix):]
+
                             full_url = urllib.parse.unquote(record.rec_headers.get_header("WARC-Target-URI"))
 
                             new_warc_entry = Entry(full_url=full_url, file_hash=file_hash)
