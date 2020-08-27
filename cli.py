@@ -62,6 +62,8 @@ if __name__ == "__main__":
 
     parser.add_argument('--warc-file-folder', dest="warc_file_folder", required=True, type=isFolderType, help="the WARC folder")
     parser.add_argument('--cdx-file-folder', dest="cdx_file_folder", required=True, type=isFolderType, help="the CDX folder")
+    parser.add_argument("--output-folder", dest="output_folder", required=True, type=isFolderType,
+        help="the output folder for the data structures we want to write out")
 
     parser.add_argument("--verbose", action="store_true", help="Increase logging verbosity")
 
