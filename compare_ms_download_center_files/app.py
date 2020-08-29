@@ -34,6 +34,7 @@ class Application:
 
         self.warc_entries_list = list()
         self.cdx_entries_list = list()
+        self.warc_error_list = list()
 
     def run(self):
 
@@ -134,6 +135,7 @@ class Application:
 
             except warcio.exceptions.ArchiveLoadFailed as e:
                 self.logger.error("WARC file failed to load: `%s`, skipping", iter_warc_gz_path)
+                self.warc_error_list.append(iter_warc_gz_path)
                 continue
 
         self.logger.info("loaded `%s` total WARC entries", len(self.warc_entries_list))
@@ -166,6 +168,10 @@ class Application:
         cdx_file_path = output_folder_path / f"{iso_str}_cdx_entries.txt"
         differences_path = output_folder_path / f"{iso_str}_differences.txt"
 
+        warc_error_path = output_folder_path / f"{iso_str}_warc_errors.txt"
+
+        warc_files_to_save_path = output_folder_path / f"{iso_str}_warc_files_to_save.txt"
+
 
         self.logger.info("writing WARC entries to `%s`", warc_file_path)
         with open(warc_file_path, "w", encoding="utf-8") as f:
@@ -193,4 +199,29 @@ class Application:
                 f.write(json.dumps(attr.asdict(iter_p), indent=4))
                 f.write("\n\n")
 
+
+        self.logger.info("writing warc errors to `%s`", warc_error_path)
+        with open(warc_error_path, "w", encoding="utf-8") as f:
+            for iter_p in self.warc_error_list:
+                f.write(str(iter_p))
+                f.write("\n")
+
+
+        self.logger.info("writing warc files to save file to `%s`", warc_files_to_save_path)
+        with open(warc_files_to_save_path, "w", encoding="utf-8") as f:
+
+            # save the warc files with errors
+            for iter_p in self.warc_error_list:
+                f.write(str(iter_p))
+                f.write("\n")
+
+            # save the warc files that we have unique files for
+            # but deduplicate the entries so we don't add the same file multiple times for readability
+            set_of_warc_paths = set()
+            for iter_e in set_of_cdx_not_in_warc:
+                set_of_warc_paths.add(iter_e.found_in_file)
+
+            for iter_x in set_of_warc_paths:
+                f.write(iter_x)
+                f.write("\n")
 
