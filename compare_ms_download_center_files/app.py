@@ -20,7 +20,7 @@ class Entry:
 
 
 class Application:
-    '''__^__description__^__
+    ''' the main application
     '''
 
     def __init__(self, logger, args):
