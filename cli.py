@@ -1,4 +1,4 @@
- #!/usr/bin/env python3
+#!/usr/bin/env python3
 
 # library imports
 import argparse
@@ -23,9 +23,9 @@ class ArrowLoggingFormatter(logging.Formatter):
         return arrow.get("{}".format(record.created), "X").to("local").isoformat()
 
 def isFolderType(filePath):
-    ''' see if the file path given to us by argparse is a file
+    ''' see if the file path given to us by argparse is a folder
     @param filePath - the filepath we get from argparse
-    @return the filepath as a pathlib.Path() if it is a file, else we raise a ArgumentTypeError'''
+    @return the filepath as a pathlib.Path() if it is a folder, else we raise a ArgumentTypeError'''
 
     path_maybe = pathlib.Path(filePath)
     path_resolved = None
@@ -37,9 +37,9 @@ def isFolderType(filePath):
     except Exception as e:
         raise argparse.ArgumentTypeError("Failed to parse `{}` as a path: `{}`".format(filePath, e))
 
-    # double check to see if its a file
+    # double check to see if its a folder
     if not path_resolved.is_dir():
-        raise argparse.ArgumentTypeError("The path `{}` is not a file!".format(path_resolved))
+        raise argparse.ArgumentTypeError("The path `{}` is not a folder!".format(path_resolved))
 
     return path_resolved
 
